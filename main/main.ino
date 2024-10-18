@@ -2,7 +2,7 @@
 
 #define PIEZO_PIN A1
 #define PIEZO_THRESHOLD 80  // Minimum piezo value to trigger a note
-#define PIEZO_SPIKE_DETECT 800  // Value to detect a sharp spike
+#define PIEZO_SPIKE_DETECT 400  // Value to detect a sharp spike
 #define NUM_OF_BUTTONS 3  // Number of buttons
 
 const byte MIDI_CH = 0;   // MIDI channel
@@ -21,7 +21,7 @@ void setup() {
   
   // Speed up the analogRead process
   // Adjust ADC prescaler to speed up analogRead from default (16MHz / 128) to faster (16MHz / 32)
-  ADCSRA = (ADCSRA & 0b11111000) | 0x04;  // Set prescaler to 16MHz/32 = 500kHz (higher speed, less resolution)
+  // ADCSRA = (ADCSRA & 0b11111000) | 0x04;  // Set prescaler to 16MHz/32 = 500kHz (higher speed, less resolution)
   
   // Setup button pins
   for (int i = 0; i < NUM_OF_BUTTONS; i++) {
