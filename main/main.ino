@@ -1,8 +1,8 @@
 #include "MIDIUSB.h"
 
-#define PIEZO_PIN A1
-#define PIEZO_THRESHOLD 50  // Minimum piezo value to trigger a note
-#define PIEZO_SPIKE_DETECT 200  // Value to detect a sharp spike
+#define PIEZO_PIN A0
+#define PIEZO_THRESHOLD 20  // Minimum piezo value to trigger a note
+#define PIEZO_SPIKE_DETECT 300  // Value to detect a sharp spike
 #define NUM_OF_BUTTONS 3  // Number of buttons
 
 const byte MIDI_CH = 0;   // MIDI channel
@@ -51,7 +51,7 @@ void handlePiezo() {
   }
 
   // If piezo has been triggered, send Note Off after a short delay
-  if (noteOnFlag && millis() - lastTriggerTime > 20) {  // Send Note Off after 50 ms
+  if (noteOnFlag && millis() - lastTriggerTime > 90) {  // Send Note Off after 50 ms
     noteOff(MIDI_CH, MIDI_NOTE, 0);  // Send Note Off message
     Serial.println("Piezo Note Off");
     noteOnFlag = false;  // Reset the flag
