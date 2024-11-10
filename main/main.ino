@@ -1,90 +1,87 @@
 #include "MIDIUSB.h"
 
-#define PIEZO_PIN A0
-#define PIEZO_THRESHOLD 20  // Minimum piezo value to trigger a note
-#define PIEZO_SPIKE_DETECT 300  // Value to detect a sharp spike
-#define NUM_OF_BUTTONS 3  // Number of buttons
+#define PIEZO_THRESHOLD 10        // Minimum piezo value to trigger a note
+#define PIEZO_SPIKE_DETECT 400    // Value to detect a sharp spike
+#define NUM_OF_DRUMS 7            // Number of drums
 
-const byte MIDI_CH = 0;   // MIDI channel
-const byte MIDI_NOTE = 40;  // Example MIDI note (Middle C)
-bool noteOnFlag = false;  // To track if the piezo note is already on
-unsigned long lastTriggerTime = 0;  // Last time the piezo note was triggered
+const byte MIDI_CH = 0;           // MIDI channel
+bool noteOnFlag[NUM_OF_DRUMS] = {false};  // To track if each piezo note is already on
+unsigned long lastTriggerTime[NUM_OF_DRUMS] = {0};  // Last time each piezo note was triggered
 
-byte buttonPin[NUM_OF_BUTTONS] = {2, 4, 11};  // Button pins
-byte buttonState[NUM_OF_BUTTONS] = {0};       // Current state of buttons
-byte buttonPreviousState[NUM_OF_BUTTONS] = {0};  // Previous state of buttons
-unsigned long lastPressTime[NUM_OF_BUTTONS] = {0};  // Debounce timer for each button
-byte buttonNotes[NUM_OF_BUTTONS] = {36, 38, 40};  // MIDI note numbers for the buttons
+byte piezoPin[NUM_OF_DRUMS] = {A0, A1, A2, A3, A4, A5, A6};  // Pins for each piezo sensor
+byte piezoNotes[NUM_OF_DRUMS] = {51, 47, 48, 38, 49, 42, 41};  // MIDI notes for each drum
+
+const byte pedalPin = 2;         // Pin for the pedal switch
+const byte bassDrumNote = 36;    // MIDI note for bass drum
+bool pedalPressed = false;       // To track pedal state
 
 void setup() {
   Serial.begin(9600);
   
   // Speed up the analogRead process
-  // Adjust ADC prescaler to speed up analogRead from default (16MHz / 128) to faster (16MHz / 32)
-  ADCSRA = (ADCSRA & 0b11111000) | 0x04;  // Set prescaler to 16MHz/32 = 500kHz (higher speed, less resolution)
+  ADCSRA = (ADCSRA & 0b11111000) | 0x04;  // Set prescaler to 16MHz/32 = 500kHz
   
-  // Setup button pins
-  for (int i = 0; i < NUM_OF_BUTTONS; i++) {
-    pinMode(buttonPin[i], INPUT_PULLUP);
+  // Setup piezo pins
+  for (int i = 0; i < NUM_OF_DRUMS; i++) {
+    pinMode(piezoPin[i], INPUT);
   }
   
-  pinMode(PIEZO_PIN, INPUT);
+  // Setup pedal pin
+  pinMode(pedalPin, INPUT_PULLUP);  // Use internal pull-up resistor
 }
 
 void loop() {
-  handleButtons();  // Check button states
-  handlePiezo();    // Check piezo sensor state
+  for (int i = 0; i < NUM_OF_DRUMS; i++) {
+    handlePiezo(i);    // Check piezo sensor state for each drum
+  }
+  handlePedals();       // Check pedal state for the bass drum
 }
 
-// Handle the piezo sensor readings and send MIDI signals
-void handlePiezo() {
-  int piezoReading = analogRead(PIEZO_PIN);
+// Handle the piezo sensor readings and send MIDI signals for each drum
+void handlePiezo(int drumIndex) {
+  int piezoReading = analogRead(piezoPin[drumIndex]);
+
+  if (piezoReading > 50) {
+    Serial.print("Drum index: ");
+    Serial.print(drumIndex);
+    Serial.print(" note: ");
+    Serial.println(piezoNotes[drumIndex]);
+  }
 
   // Check for a sharp spike to detect a tap (instant response)
-  if (piezoReading > PIEZO_SPIKE_DETECT && !noteOnFlag) {
+  if (piezoReading > PIEZO_SPIKE_DETECT && !noteOnFlag[drumIndex]) {
     byte velocity = map(piezoReading, PIEZO_THRESHOLD, 1023, 1, 127);  // Map piezo value to MIDI velocity
-    noteOn(MIDI_CH, MIDI_NOTE, velocity);  // Send Note On message
-    Serial.print("Piezo Note On - Velocity: ");
+    noteOn(MIDI_CH, piezoNotes[drumIndex], velocity);  // Send Note On message for each drum
+    Serial.print("Drum ");
+    Serial.print(drumIndex);
+    Serial.print(" Note On - Velocity: ");
     Serial.println(velocity);
-    noteOnFlag = true;  // Mark that the note is currently on
-    lastTriggerTime = millis();  // Store the time of the tap
+    noteOnFlag[drumIndex] = true;  // Mark that the note is currently on
+    lastTriggerTime[drumIndex] = millis();  // Store the time of the tap
   }
 
   // If piezo has been triggered, send Note Off after a short delay
-  if (noteOnFlag && millis() - lastTriggerTime > 90) {  // Send Note Off after 50 ms
-    noteOff(MIDI_CH, MIDI_NOTE, 0);  // Send Note Off message
-    Serial.println("Piezo Note Off");
-    noteOnFlag = false;  // Reset the flag
+  if (noteOnFlag[drumIndex] && millis() - lastTriggerTime[drumIndex] > 90) {  // Send Note Off after 90 ms
+    noteOff(MIDI_CH, piezoNotes[drumIndex], 0);  // Send Note Off message
+    Serial.print("Drum ");
+    Serial.print(drumIndex);
+    Serial.println(" Note Off");
+    noteOnFlag[drumIndex] = false;  // Reset the flag
   }
 }
 
-// Handle button presses and send MIDI signals
-void handleButtons() {
-  unsigned long currentTime = millis();
+// Handle the pedal input and send MIDI signal for bass drum
+void handlePedals() {
+  bool currentPedalState = digitalRead(pedalPin) == LOW;  // Check if pedal is pressed
 
-  for (int i = 0; i < NUM_OF_BUTTONS; i++) {
-    buttonState[i] = digitalRead(buttonPin[i]);
-
-    // Check for a button press (LOW state with debouncing)
-    if (buttonState[i] == LOW && buttonPreviousState[i] == HIGH && currentTime - lastPressTime[i] > 100) {
-      noteOn(MIDI_CH, buttonNotes[i], 127);  // Send Note On message for the button
-      Serial.print("Button ");
-      Serial.print(i);
-      Serial.println(": Pressed");
-
-      lastPressTime[i] = currentTime;  // Update the last press time
-    }
-
-    // Check for button release (transition to HIGH)
-    if (buttonState[i] == HIGH && buttonPreviousState[i] == LOW) {
-      noteOff(MIDI_CH, buttonNotes[i], 0);  // Send Note Off message for the button
-      Serial.print("Button ");
-      Serial.print(i);
-      Serial.println(": Released");
-    }
-
-    // Update previous state
-    buttonPreviousState[i] = buttonState[i];
+  if (currentPedalState && !pedalPressed) {  // If pedal is pressed and wasn't previously
+    noteOn(MIDI_CH, bassDrumNote, 127);  // Send Note On for bass drum with max velocity
+    Serial.println("Bass Drum Note On - Pedal Pressed");
+    pedalPressed = true;  // Set pedal state to pressed
+  } else if (!currentPedalState && pedalPressed) {  // If pedal is released
+    noteOff(MIDI_CH, bassDrumNote, 0);  // Send Note Off for bass drum
+    Serial.println("Bass Drum Note Off - Pedal Released");
+    pedalPressed = false;  // Reset pedal state
   }
 }
 
