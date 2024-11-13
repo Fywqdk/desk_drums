@@ -1,7 +1,7 @@
 #include "MIDIUSB.h"
 
 #define PIEZO_THRESHOLD 10        // Minimum piezo value to trigger a note
-#define PIEZO_SPIKE_DETECT 400    // Value to detect a sharp spike
+#define PIEZO_SPIKE_DETECT 300    // Value to detect a sharp spike
 #define NUM_OF_DRUMS 7            // Number of drums
 
 const byte MIDI_CH = 0;           // MIDI channel
