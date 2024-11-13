@@ -27,5 +27,8 @@ This repository contains all the code, schematics, and 3D models you need to bui
 2. **Software Setup**: Upload the Arduino code to the Arduino Leonardo to enable MIDI functionality.
 3. **Configure in DAW**: Connect your Arduino to your computer, and open a MIDI-compatible software like GarageBand or Ableton to map each pad to a specific drum sound.
 
+## Wiring Schematic
+![MIDI Drums Wiring](https://github.com/cybercraftics/desk_drums/blob/main/schematics/MIDI_drums_wiring.png)
+
 ## License
 This project is licensed under the MIT License.
