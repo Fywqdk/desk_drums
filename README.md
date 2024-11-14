@@ -20,7 +20,7 @@ This repository contains all the code, schematics, and 3D models you need to bui
 - **3D-Printed Plates and Drumsticks** (files included)
 - **Desk Mat** for mounting and cushioning
 - **Universal Glue** and **Hot Glue** for assembly
-- **Ribbon cable""
+- **Ribbon cable**
 
 ## Getting Started
 1. **Hardware Assembly**: Follow the schematic provided to connect piezo sensors to the Arduino. Use the 3D-printed templates to hold the drum pads in place on the desk mat.
