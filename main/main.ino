@@ -11,7 +11,7 @@ unsigned long lastTriggerTime[NUM_OF_DRUMS] = {0};  // Last time each piezo note
 byte piezoPin[NUM_OF_DRUMS] = {A0, A1, A2, A3, A4, A5, A6};  // Pins for each piezo sensor
 byte piezoNotes[NUM_OF_DRUMS] = {51, 47, 48, 38, 49, 42, 41};  // MIDI notes for each drum
 
-const byte pedalPin = 2;         // Pin for the pedal switch
+const byte pedalPin = 2;
 const byte bassDrumNote = 36;    // MIDI note for bass drum
 bool pedalPressed = false;       // To track pedal state
 
