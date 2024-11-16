@@ -5,7 +5,8 @@ MIDI Desk Drums is a compact, USB-powered drum kit designed to fit right on your
 
 This repository contains all the code, schematics, and 3D models you need to build your own MIDI Desk Drums. Whether you're a music enthusiast, DIY maker, or just curious about MIDI technology, this project is perfect for adding a personal touch to your music-making setup!
 
-Video:
+### Video:
+
 [![MIDI Desk Drums Demo](https://img.youtube.com/vi/3wSPyhD2FfM/0.jpg)](https://youtu.be/3wSPyhD2FfM)
 
 ## Features
