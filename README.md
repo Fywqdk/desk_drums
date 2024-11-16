@@ -14,18 +14,9 @@ This repository contains all the code, schematics, and 3D models you need to bui
 - **Arduino-Powered**: Uses an Arduino Leonardo to read sensor inputs and convert them to MIDI signals.
 - **Debouncing Logic**: Avoids multiple signals from a single hit, thanks to a custom debounce algorithm.
 
-## Components
-- **Arduino Leonardo** (or similar, with MIDI support)
-- **Piezo Sensors** for detecting drum hits
-- **3D-Printed Plates and Drumsticks** (files included)
-- **Desk Mat** for mounting and cushioning
-- **Universal Glue** and **Hot Glue** for assembly
-- **Ribbon cable**
+## Building Instructions
+https://www.instructables.com/Desk-Mat-to-MIDI-Drums/
 
-## Getting Started
-1. **Hardware Assembly**: Follow the schematic provided to connect piezo sensors to the Arduino. Use the 3D-printed templates to hold the drum pads in place on the desk mat.
-2. **Software Setup**: Upload the Arduino code to the Arduino Leonardo to enable MIDI functionality.
-3. **Configure in DAW**: Connect your Arduino to your computer, and open a MIDI-compatible software like GarageBand or Ableton to map each pad to a specific drum sound.
 
 ## Wiring Schematic
 ![MIDI Drums Wiring](https://github.com/cybercraftics/desk_drums/blob/main/schematics/MIDI_drums_wiring.png)
