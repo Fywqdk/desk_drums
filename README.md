@@ -10,6 +10,9 @@ This repository contains all the code, schematics, and 3D models you need to bui
 [![MIDI Desk Drums Demo](https://img.youtube.com/vi/3wSPyhD2FfM/0.jpg)](https://youtu.be/3wSPyhD2FfM)
 
 ## Features
+
+![Instructables Image](https://content.instructables.com/FGG/X3QP/M3HNDZE6/FGGX3QPM3HNDZE6.png?auto=webp&frame=1&width=1024&height=1024&fit=bounds&md=MjAyNC0xMS0xNSAwMTozMTo1MC4w)
+
 - **Compact and Desk-Friendly Design**: The drum kit is designed to fit on a standard desk or table, making it accessible and convenient.
 - **MIDI Compatibility**: Sends MIDI signals over USB, compatible with various DAWs (Digital Audio Workstations).
 - **Dynamic Response**: Adjusts the volume based on hit strength, providing realistic drumming feedback.
