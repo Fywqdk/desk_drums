@@ -4,7 +4,14 @@ Original work by [cybercraftics](https://github.com/cybercraftics): [MIDI Desk D
 
 I am much more comfortable with python and have some spare [Waveshare RP2040 Zero](https://www.waveshare.com/wiki/RP2040-Zero), and then it would be a fun project to port it to Circuitpython 
 
-- Morten
+Todo:
+- Test full analog drum setup
+  - Waiting for 3D printer and desk mats in mail
+- Create schematic for electronics
+  - Current build relies on 2x ADS1115 16bit 4-channel ADC which are querried over I2C for input
+- Test Pedal class
+  - Haven't had time, a Pedal is printed though.
+- Complete the full build and post pictures.
 
 ---
 
