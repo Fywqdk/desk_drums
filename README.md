@@ -1,4 +1,12 @@
-# MIDI Desk Drums
+# MIDI Desk Drums - Circuit Python edition
+
+Original work by [cybercraftics](https://github.com/cybercraftics): [MIDI Desk Drums](https://github.com/cybercraftics/desk_drums)
+
+I am much more comfortable with python and have some spare [Waveshare RP2040 Zero](https://www.waveshare.com/wiki/RP2040-Zero), and then it would be a fun project to port it to Circuitpython 
+
+- Morten
+
+---
 
 ## Overview
 MIDI Desk Drums is a compact, USB-powered drum kit designed to fit right on your desk. Built using Arduino, piezo sensors, and 3D-printed components, this project enables you to create a fully functional MIDI drum kit that's portable, responsive, and works seamlessly with music software like GarageBand, Ableton, and Logic Pro.
